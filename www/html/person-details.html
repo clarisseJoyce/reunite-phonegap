@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LOFO Verification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/listing.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/main.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Work+Sans:400,600|Playfair+Display|Source+Sans+Pro:300"
+        rel="stylesheet">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var detailsId = localStorage.getItem("perid");
+            $.ajax({
+                type: "POST",
+                url: "http://192.168.0.119/reunite/persondetails.php",
+                data: { perId: detailsId },
+                cache: false,
+                success: function (data) {
+                    $.each(JSON.parse(data), function (index, obj) {
+                        $('.details').append(
+                            `<img src= "http://192.168.0.119/reunite/person/person-${detailsId}.jpg"/>
+
+                            <p id="name"> ${obj.pername} </p>
+                            <br />
+
+                            <p class="detail">
+                                Place last seen:
+                                <label> ${obj.perplace}, ${obj.percountry}</label>
+                            </p>
+
+                            <p class="detail">
+                                Gender & Age:
+                                <label> ${obj.pergender} / ${obj.perage} </label>
+                            </p>
+
+                            <p class="detail">
+                                Height & Weight:
+                                <label> ${obj.perheight}cm / around ${obj.perweight}kg </label>
+                            </p>
+
+                            <p class="detail">
+                                Race:
+                                <label> ${obj.perrace} </label>
+                            </p>
+
+                            <p class="detail">
+                                Other descriptions:
+                                <label> ${obj.perdesc} </label>
+                            </p>
+
+                            <button type="button" class="go-back">
+                                Go back to listing
+                            </button>`
+                        );
+                    })
+                }
+            })
+        })
+    </script>
+
+    <script>
+        function pageName(clickedPage) {
+            if (clickedPage == "logout") {
+                localStorage.setItem("pagename", "back");
+
+                window.location.assign('../index.html');
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav role="top-navigation">
+        <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="top-menu">
+                <li><a href="report.html">Create Listing</a></li>
+                <li><a href="listings.html">Listings</a></li>
+                <li>
+                    <a href="../index.html" id="logout" onclick="pageName(this.id)">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="menu-container">
+        <button type="button" class="menu menu-active">
+            Details
+        </button>
+
+        <a href="contact-details.html">
+            <button type="button" class="menu">
+                Contact
+            </button>
+        </a>
+    </div>
+
+    <div class="details"></div>
+</body>
+
+</html>

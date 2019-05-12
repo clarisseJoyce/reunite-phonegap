@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LOFO Verification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/listing.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/main.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Work+Sans:400,600|Playfair+Display|Source+Sans+Pro:300"
+        rel="stylesheet">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+
+    <script>
+        $(function () {
+            $.ajax({
+                url: 'http://192.168.0.119/reunite/personlist.php',
+                success: function (content) {
+                    if ($.trim(content).length > 0) {
+                        $.each(JSON.parse(content), function (index, obj) {
+                            $('.list-container').append(
+                                `<div class = "listwrapper">
+                                <div class="pic-container">
+                                    <img src= "http://192.168.0.119/reunite/person/person-${obj.perid}.jpg"/>
+                                </div>
+                                <div class="short-info">
+                                    <span class="name-container">${obj.pername}</span>
+                                    <br>
+                                    <span class="petid-container">${obj.perid}</span>
+                                    <span class="dets-container">
+                                        A ${obj.perage} years old ${obj.perrace} ${obj.pergender}.
+                                    </span>
+                                    <br>
+                                    <br>
+                                    <span class="last-seen-cont">${obj.perplace}, ${obj.percountry}</span>
+                                    <button type = "button" class = "more-dets" id = "${obj.perid}" onClick = "getIdVal(this.id)">
+                                        more details
+                                    </button>
+                                </div>
+                            </div>`
+                            );
+                        });
+                    }
+                    else {
+                        $('.list-container').append(
+                            `<p class = "empty-list"> No reports have been made yet! </p>`
+                        );
+                    }
+                }
+            })
+        });
+    </script>
+
+    <script>
+        function getIdVal(clickedId) {
+            localStorage.removeItem("perid");
+            localStorage.removeItem("petid");
+            localStorage.setItem("perid", clickedId);
+
+            window.location.assign('person-details.html');
+        }
+    </script>
+
+    <script>
+        function pageName(clickedPage) {
+            if (clickedPage == "logout") {
+                localStorage.setItem("pagename", "back");
+
+                window.location.assign('../index.html');
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav role="top-navigation">
+        <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="top-menu">
+                <li><a href="report.html">Create Listing</a></li>
+                <li><a href="listings.html">Listings</a></li>
+                <li>
+                    <a href="../index.html" id="logout" onclick="pageName(this.id)">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="listing-wrapper">
+        <p class="listing-title">
+            Person Listing
+        </p>
+
+        <div class="list-container"></div>
+    </div>
+</body>
+
+</html>

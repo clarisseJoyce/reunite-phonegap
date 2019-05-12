@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LOFO Verification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/listing.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/main.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Work+Sans:400,600|Playfair+Display|Source+Sans+Pro:300"
+        rel="stylesheet">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var contactId = localStorage.getItem("petid");
+            var tableName = "pet";
+
+            if (contactId == null) {
+                var contactId = localStorage.getItem("perid");
+                var tableName = "person";
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "http://192.168.0.119/reunite/contactdetails.php",
+                data: {
+                    contactId: contactId,
+                    tableName: tableName
+                },
+                cache: false,
+                success: function (data) {
+                    $.each(JSON.parse(data), function (index, obj) {
+                        $('.contacts').append(
+                            `<h3> Contact Person </h3>
+                                <p id = "contactname"> ${obj.listername} </span>
+                            <br />`
+                        )
+
+                        if (obj.listercontact == "") {
+                            $('.contacts').append(
+                                `<div class="contact con-left">
+                                    <p>
+                                        Call
+                                        </br>
+                                        <span class = "small"> # not provided </span>
+                                    </p>
+                                </div>
+
+                                <div class="contact con-right">
+                                    <p>
+                                        SMS
+                                        </br>
+                                        <span class = "small"> # not provided </span>
+                                    </p>
+                                </div>`
+                            )
+                        }
+                        else {
+                            $('.contacts').append(
+                                `<a href = "tel:${obj.listercontact}">
+                                    <div class="contact con-left">
+                                        <p>
+                                            Call
+                                        </p>
+                                    </div>
+                                </a>
+
+                                <a href = "sms:${obj.listercontact}">
+                                    <div class="contact con-right">
+                                        <p>
+                                            SMS
+                                        </p>
+                                    </div>
+                                </a>`
+                            )
+                        }
+
+                        if (obj.listeremail == "") {
+                            $('.contacts').append(
+                                `<div class="contact con-mid">
+                                    <p>
+                                        Email
+                                        </br>
+                                        <span class = "small"> email not provided </span>
+                                    </p>
+                                </div>`
+                            )
+                        }
+                        else {
+                            $('.contacts').append(
+                                `<a href = "mailto:${obj.listeremail}">
+                                    <div class="contact con-mid">
+                                        <p>
+                                            Email
+                                        </p>
+                                    </div>
+                                </a>`
+                            )
+                        }
+
+                        $('.contacts').append(
+                            `<a href="petlist.html">
+                                <button type="button" class="go-back">
+                                    Go back to listing
+                                </button>
+                            </a>`
+                        )
+                    })
+                }
+            })
+        })
+    </script>
+
+    <script>
+        function pageName(clickedPage) {
+            if (clickedPage == "logout") {
+                localStorage.setItem("pagename", "back");
+
+                window.location.assign('../index.html');
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav role="top-navigation">
+        <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="top-menu">
+                <li><a href="report.html">Create Listing</a></li>
+                <li><a href="listings.html">Listings</a></li>
+                <li>
+                    <a href="../index.html" id="logout" onclick="pageName(this.id)">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="menu-container">
+        <a href="pet-details.html">
+            <button type="button" class="menu">
+                Details
+            </button>
+        </a>
+
+        <button type="button" class="menu menu-active">
+            Contact
+        </button>
+    </div>
+
+    <div class="contacts"></div>
+</body>
+
+</html>

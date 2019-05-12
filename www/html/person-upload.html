@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LOFO Verification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/listing.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/main.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Work+Sans:400,600|Playfair+Display|Source+Sans+Pro:300"
+        rel="stylesheet">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.submit').on('click', function () {
+                var file_data = $('.image').prop('files')[0];
+
+                if (file_data != undefined) {
+                    var form_data = new FormData();
+                    form_data.append('file', file_data);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://192.168.0.119/reunite/personupload.php',
+                        contentType: false,
+                        processData: false,
+                        data: form_data,
+                        success: function (response) {
+                            if (response == 'success') {
+                                window.location.assign('listing-confirm.html');
+                            } else if (response == 'false') {
+                                alert('Invalid file type.');
+                            } else {
+                                alert('Something went wrong');
+                            }
+                        }
+                    });
+                }
+                return false;
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <nav role="top-navigation">
+        <div id="menuToggle">
+        </div>
+    </nav>
+
+    <div id="photo-upload">
+        <br />
+        <span id="upload-title">
+            Latest Photo Upload
+        </span>
+
+        <br />
+        <br />
+
+        <span id="upload-note">
+            Uploading the person in the report's latest photo is required
+            for other people who are willing to help be able to recognize
+            him/her easier.
+        </span>
+
+        <br />
+        <br />
+        <br />
+
+        <form enctype="multipart/form-data">
+            <input type="file" name="image" class="image" required>
+            <br />
+            <br />
+            <input type="submit" name="submit" id="upload-photo" class = "submit" value="Submit">
+        </form>
+    </div>
+</body>
+
+</html>

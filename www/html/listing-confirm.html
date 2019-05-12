@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LOFO Verification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/listing.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/main.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Work+Sans:400,600|Playfair+Display|Source+Sans+Pro:300"
+        rel="stylesheet">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+
+    <script>
+        function pageName(clickedPage) {
+            if (clickedPage == "logout") {
+                localStorage.setItem("pagename", "back");
+
+                window.location.assign('../index.html');
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav role="top-navigation">
+        <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="top-menu">
+                <li><a href="report.html">Create Listing</a></li>
+                <li><a href="listings.html">Listings</a></li>
+                <li>
+                    <a href="../index.html" id="logout" onclick="pageName(this.id)">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="lister-info">
+        <p class="create-head"> Listing Submitted! </p>
+
+        <div class="confirm-message">
+            <p class="normal">
+                <ul>
+                    <li class="lister-confirm">
+                        Your listing has been submitted and will soon be posted
+                        on the listings page.
+                    </li>
+
+                    <li>
+                        Notifications about your listing will be sent out to other
+                        users to raise awareness immediately.
+                    </li>
+                </ul>
+            </p>
+        </div>
+
+        <br />
+
+        <a href="listings.html">
+            <button type="button" class="create-list submit-button">
+                Back to Listing
+            </button>
+        </a>
+    </div>
+</body>
+
+</html>

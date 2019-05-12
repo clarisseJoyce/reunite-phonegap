@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LOFO Verification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/listing.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/main.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Work+Sans:400,600|Playfair+Display|Source+Sans+Pro:300"
+        rel="stylesheet">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var getpage = localStorage.getItem("pagename");
+
+            if (getpage == "removeItem") {
+                var pagename = "remove";
+                var tableName = localStorage.getItem("table");
+                var dataNum = localStorage.getItem("data");
+
+                $.ajax({
+                    type: "POST",
+                    url: 'http://192.168.0.119/reunite/admin.php',
+                    data: {
+                        pageName: pagename,
+                        dataNum: dataNum,
+                        tableName: tableName
+                    },
+                    cache: false,
+                    success: function (data) {
+                        $('#totalcont').append(
+                            `<button id = "back" class = "backtodash" onClick = "pageName(this.id)">
+                                Back to Dashboard
+                            </button>
+
+                            <br/>
+
+                            <p id = "removemessage">
+                                You have successfully removed a data!
+                            </p>`
+                        )
+                    }
+                })
+            }
+            else {
+                if (getpage == "back")
+                    var pagename = "dash";
+                else if (getpage == "pet")
+                    var pagename = "pet";
+                else if (getpage == "person")
+                    var pagename = "person";
+                else if (getpage == "user")
+                    var pagename = "user";
+
+                $.ajax({
+                    type: "POST",
+                    url: 'http://192.168.0.119/reunite/admin.php',
+                    data: { pageName: pagename },
+                    cache: false,
+                    success: function (data) {
+                        if (pagename == "dash") {
+                            $.each(JSON.parse(data), function (index, obj) {
+                                $('#totalcont').append(
+                                    `<p id="total">Total Listings</p>
+                            <div id = "pettotal">
+                                <p>PET</p>
+                                <span class = "totalnum">${obj.pettotal}</span>
+                                <br/>
+                                <button class = "adminButton" id = "pet" onClick = "pageName(this.id)">
+                                    Manage
+                                </button>
+                            </div>
+
+                            <div id = "persontotal">
+                                <p>PERSON</p>
+                                <span class = "totalnum">${obj.persontotal}</span>
+                                <br/>
+                                <button class = "adminButton" id = "person" onClick = "pageName(this.id)">
+                                    Manage
+                                </button>
+                            </div>
+
+                            <div id = "usertotal">
+                                <p id="total">Total Users</p>
+                                <span class = "totalnum">${obj.usertotal}</span>
+                                <br/>
+                                <button class = "adminButton" id = "user" onClick = "pageName(this.id)">
+                                    Manage
+                                </button>
+                            </div>`
+                                )
+                            })
+                        }
+
+                        else {
+                            $('#totalcont').append(
+                                `<button id = "back" class = "backtodash" onClick = "pageName(this.id)">
+                                Back to Dashboard
+                            </button>`
+                            )
+
+                            $.each(JSON.parse(data), function (index, obj) {
+                                if (pagename == "pet") {
+                                    $('#totalcont').append(
+                                        `<div class = "dets-cont">
+                                    <p id="name"> ${obj.petname} </p>
+
+                                    <p class="detail">
+                                        Place last seen:
+                                        <label> ${obj.petplace}, ${obj.petcountry} </label>
+                                    </p>
+
+                                    <p class="detail">
+                                        Gender:
+                                        <label> ${obj.petgender} </label>
+                                    </p>
+
+                                    <p class="detail">
+                                        Breed/Type:
+                                        <label> ${obj.petbreed} / ${obj.pettype} </label>
+                                    </p>
+
+                                    <p class="detail">
+                                        Coat Type & Color:
+                                        <label> ${obj.petcoat} / ${obj.petcolor} </label>
+                                    </p>
+
+                                    <p class="detail">
+                                        Collar or Tag:
+                                        <label> ${obj.petcollar} </label>
+                                    </p>
+
+                                    <p class="detail">
+                                        Other descriptions:
+                                        <label> ${obj.petdesc} </label>
+                                    </p>
+
+                                    <button class = "removeItem" id = "${obj.petid}" onClick = 'removeData(this.className, this.id, "pet")'>
+                                        Remove
+                                    </button>
+                                </div>`
+                                    )
+                                }
+
+                                else if (pagename == "person") {
+                                    $('#totalcont').append(
+                                        `<div class = "dets-cont">
+                                    <p id="name"> ${obj.pername} </p>
+
+                                    <p class="detail">
+                                        Place last seen:
+                                        <label> ${obj.perplace}, ${obj.percountry}</label>
+                                    </p>
+
+                                    <p class="detail">
+                                        Gender & Age:
+                                        <label> ${obj.pergender} / ${obj.perage} </label>
+                                    </p>
+
+                                    <p class="detail">
+                                        Height & Weight:
+                                        <label> ${obj.perheight}cm / around ${obj.perweight}kg </label>
+                                    </p>
+
+                                    <p class="detail">
+                                        Race:
+                                        <label> ${obj.perrace} </label>
+                                    </p>
+
+                                    <p class="detail">
+                                        Other descriptions:
+                                        <label> ${obj.perdesc} </label>
+                                    </p>
+
+                                    <button class = "removeItem" id = "${obj.perid}" onClick = 'removeData(this.className, this.id, "person")'>
+                                        Remove
+                                    </button>
+                                </div>`
+                                    )
+                                }
+
+                                else if (pagename == "user") {
+                                    $('#totalcont').append(
+                                        `<div class = "dets-cont">
+                                    <p id="name"> ${obj.userfirst} ${obj.userlast} </p>
+
+                                    <p class="detail">
+                                        Email Address:
+                                        <label> ${obj.useremail} </label>
+                                    </p>
+
+                                    <p class="detail">
+                                        Country:
+                                        <label> ${obj.usercountry} </label>
+                                    </p>
+
+                                    <button class = "removeItem" id = "${obj.userid}" onClick = 'removeData(this.className, this.id, "user")'>
+                                        Remove
+                                    </button>
+                                </div>`
+                                    )
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    </script>
+
+    <script>
+        function pageName(clickedPage) {
+            if (clickedPage == "logout") {
+                localStorage.setItem("pagename", "back");
+
+                window.location.assign('../index.html');
+            }
+            else {
+                localStorage.setItem("pagename", clickedPage);
+
+                window.location.assign('admin.html');
+            }
+        }
+
+        function removeData(request, data, table) {
+            var notify = confirm("Are you sure you want to remove this data?");
+            if (notify == true) {
+                localStorage.setItem("pagename", request);
+                localStorage.setItem("data", data);
+                localStorage.setItem("table", table);
+
+                window.location.assign('admin.html');
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav role="top-navigation">
+        <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="top-menu">
+                <li>
+                    <a href="../index.html" id="logout" onclick="pageName(this.id)">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <p id="listings"> Admin </p>
+
+    <div id="totalcont"></div>
+</body>
+
+</html>

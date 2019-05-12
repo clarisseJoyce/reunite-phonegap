@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LOFO Verification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/listing.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/main.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Work+Sans:400,600|Playfair+Display|Source+Sans+Pro:300"
+        rel="stylesheet">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+
+    <script>
+        function pageName(clickedPage) {
+            if (clickedPage == "logout") {
+                localStorage.setItem("pagename", "back");
+
+                window.location.assign('../index.html');
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav role="top-navigation">
+        <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="top-menu">
+                <li><a href="report.html">Create Listing</a></li>
+                <li><a href="listings.html">Listings</a></li>
+                <li>
+                    <a href="../index.html" id="logout" onclick="pageName(this.id)">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="listing">
+        <p id="listings">Create Listing</p>
+
+        <div id="listing-message">
+            <p>
+                <ul>
+                    <li>
+                        Before submitting a report, please make sure that the person/pet you are about to report
+                        have not been posted in the listings yet to prevent duplication.
+                    </li>
+
+                    <li>
+                        Multiple reporting of the same person/pet to get more attention from other users will not be
+                        tolerated and the duplicates will be deleted.
+                    </li>
+                </ul>
+            </p>
+        </div>
+
+        <a href="pet-listing.html">
+            <div class="choice">
+                <img src="../images/pet.png" />
+                <p>Pets</p>
+            </div>
+        </a>
+
+        <a href="person-listing.html">
+            <div class="choice right">
+                <img src="../images/person.png" />
+                <p>Persons</p>
+            </div>
+        </a>
+
+        <a href="listings.html">
+            <button type="button" name="create" class="create-listing">
+                Cancel
+            </button>
+        </a>
+    </div>
+</body>
+
+</html>
